@@ -1,6 +1,18 @@
 # relational-database-cs236-byu
 A relational database management system (RDBMS) maintains data sets called relations. A relation has a name, a schema, and a set of tuples. A schema is a set of attributes. A tuple is a set of attribute/value pairs. An attribute is the name associated with each data value in a tuple entry. Relations are used as operands in relational operations such as rename, selection, projection, union, and join. The goal of this project is to build a relational database system from a Datalog file, and then answer queries using relational algebra.
 
+### Table of Contents
+- [Project Description](#project-description)
+- [Requirements](#requirements)
+    + [Part 1](#part-1)
+    + [Part 2](#part-2)
+- [Examples](#examples)
+- [FAQs](#faqs)
+- [Submission](#submission)
+- [Passoff](#passoff)
+
+
+
 ### Project Description
 A Datalog Program can be represented by a Database. Each scheme in a Datalog Program defines a relation in the Database. The scheme defines the name of the relation, and the attribute list of the scheme defines the schema of the relation. Each fact in the Datalog Program defines a tuple in a relation. The fact name identifies a relation to which the tuple belongs. The basic data structure is a database consisting of relations, each with their own name, schema, and set of tuples. How you choose and use your data structures effects the difficulty of the project. Inheritance and polymorphism are always useful. Each data structure implementation has its benefits, drawbacks and obstacles to overcome.
 
@@ -304,3 +316,5 @@ Navigate to Learning Suite, select 'CS 236', and click on 'Assignments' on the c
 
 ### Passoff
 Pass-off your project directly to a TA during normal TA hours. TAs help students on a first-come/first-serve basis and are under no obligation to stay later than designated hours so plan accordingly. Please review the syllabus and the project standards for the pass-off requirements including the published time bound.
+
+[Back to Top](#relational-database-cs236-byu)
