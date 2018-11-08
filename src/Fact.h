@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by Spencer Tuft on 10/6/18.
 //
@@ -17,30 +19,30 @@ class Fact {
 
  public:
   Fact() = default;
-  Fact(std::string factName) : name(std::move(factName)) {};
-  Fact(std::string factName, std::string value) {
-    name = factName;
+  Fact(std::string fact_name) : name(std::move(fact_name)) {};
+  Fact(std::string fact_name, std::string value) {
+    name = fact_name;
     list.emplace_back(value);
   };
-  Fact(std::string factName, std::vector<std::string> values) : name(factName), list(values) {};
+  Fact(std::string fact_name, std::vector<std::string> values) : name(std::move(fact_name)), list(std::move(values)) {};
 
-  void addValue(std::string value) {
+  void add(std::string value) {
     list.emplace_back(value);
   }
 
-  void setName(std::string factName) {
+  void set_name(std::string factName) {
     name = factName;
   }
 
-  std::string getName() {
+  std::string get_name() {
     return name;
   }
 
-  std::vector<std::string> getList() {
+  std::vector<std::string> get_list() {
     return list;
   }
 
-  std::string toString() {
+  std::string str() {
     std::stringstream ss;
     ss << name << "(";
     for (std::size_t i = 0, max = list.size(); i < max; i++) {

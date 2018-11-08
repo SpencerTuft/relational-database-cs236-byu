@@ -50,13 +50,13 @@ Rules:
 
 Queries:
    snap(Id,'Snoopy',A,P)?
-   csg(Course,'33333',Grade)?
-   cp(Course,'CS100')?
-   cdh('EE200',Day,Hour)?
-   cr('CS101',Room)?
-   tthCourses(C)?
-   before('CS100','CS206')?
-   before('CS100',prerequisiteTo)?
-   Schedule('Snoopy',C,R,D,H)?
-   Grades('Snoopy',C,G)?
-   Students('CS101',R,N,G)?
+#   csg(Course,'33333',Grade)?
+#   cp(Course,'CS100')?
+#   cdh('EE200',Day,Hour)?
+#   cr('CS101',Room)?
+#   tthCourses(C)?
+#   before('CS100','CS206')?
+#   before('CS100',prerequisiteTo)?
+#   Schedule('Snoopy',C,R,D,H)?
+#   Grades('Snoopy',C,G)?
+#   Students('CS101',R,N,G)?

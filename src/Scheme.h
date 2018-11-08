@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by Spencer Tuft on 10/6/18.
 //
@@ -17,30 +19,30 @@ class Scheme {
   std::vector<std::string> list;
  public:
   Scheme() = default;
-  Scheme(std::string schemeName): name(std::move(schemeName)) {};
-  Scheme(std::string schemeName, std::string id) {
-    name = schemeName;
+  Scheme(std::string scheme_name): name(std::move(scheme_name)) {};
+  Scheme(std::string scheme_name, std::string id) {
+    name = scheme_name;
     list.emplace_back(id);
   };
-  Scheme(std::string schemeName, std::vector<std::string> idList): name(std::move(schemeName)), list(idList) {};
+  Scheme(std::string scheme_name, std::vector<std::string> id_list): name(std::move(scheme_name)), list(std::move(id_list)) {};
 
-  void setName(std::string schemeName) {
-    name = schemeName;
+  void setName(std::string scheme_name) {
+    name = scheme_name;
   }
 
   void addId(std::string identifier) {
     list.push_back(identifier);
   }
 
-  std::vector<std::string> getIdList() {
+  std::vector<std::string> get_list() {
     return list;
   };
 
-  std::string getName() {
+  std::string get_name() {
     return name;
   };
 
-  std::string toString() {
+  std::string str() {
     std::stringstream ss;
     ss << name << "(";
     for (std::size_t i = 0, max = list.size(); i < max; i++) {

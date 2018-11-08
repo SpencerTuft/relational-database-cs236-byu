@@ -19,7 +19,6 @@ DatalogParser::DatalogParser(std::string &fileName) {
     requireType("EOF");
 
     domain = createDomain();
-    std::cout << "Success!" << std::endl << toString() << std::endl;
   } catch (Token &error) {
     std::cout << "Failure!" << std::endl << "  " << error.toString() << std::endl;
   }
@@ -39,6 +38,10 @@ std::vector<Rule> DatalogParser::getRules() {
 
 std::vector<Query> DatalogParser::getQueries() {
   return queries;
+}
+
+std::vector<std::string> DatalogParser::getDomain() {
+  return domain;
 }
 
 Token DatalogParser::requireType(std::string type) {
@@ -102,7 +105,7 @@ Fact DatalogParser::createFact() {
   Fact newFact(factName, factValue);
   while (lexer.currentToken().ofType("COMMA")) {
     lexer.advance(); // Skip comma
-    newFact.addValue(requireType("STRING").getValue());
+    newFact.add(requireType("STRING").getValue());
   }
   requireType("RIGHT_PAREN");
   requireType("PERIOD");
@@ -139,7 +142,7 @@ Predicate DatalogParser::createHeadPredicate() {
   while (lexer.currentToken().ofType("COMMA")) {
     lexer.advance(); // Skip comma
     parameterValue = requireType("ID").getValue();
-    newHeadPredicate.addParam(Parameter(parameterValue, "ID"));
+    newHeadPredicate.add_param(Parameter(parameterValue, "ID"));
   }
   requireType("RIGHT_PAREN");
   return newHeadPredicate;
@@ -151,7 +154,7 @@ Predicate DatalogParser::createPredicate() {
   Predicate newPredicate(predicateId, createParameter());
   while (lexer.currentToken().ofType("COMMA")) {
     lexer.advance(); // Skip comma
-    newPredicate.addParam(createParameter());
+    newPredicate.add_param(createParameter());
   }
   requireType("RIGHT_PAREN");
   return newPredicate;
@@ -210,15 +213,15 @@ std::vector<std::string> DatalogParser::createDomain() {
   std::set<std::string> domain;
 
   // Copy values to set
-  for (auto& fact : facts) {
-    std::vector<std::string> items = fact.getList();
-    for (auto& item : items) {
+  for (auto &fact : facts) {
+    std::vector<std::string> items = fact.get_list();
+    for (auto &item : items) {
       domain.emplace(item);
     }
   }
 
   // Convert back to vector form
-  std::vector<std::string> unique (domain.begin(), domain.end());
+  std::vector<std::string> unique(domain.begin(), domain.end());
   return unique;
 }
 
@@ -227,14 +230,14 @@ std::string DatalogParser::toString() {
 
   ss << "Schemes(" << schemes.size() << "):";
   for (auto &scheme : schemes) {
-    ss << std::endl << "  " << scheme.toString();
+    ss << std::endl << "  " << scheme.str();
   }
 
   ss << std::endl;
 
   ss << "Facts(" << facts.size() << "):";
   for (auto &fact : facts) {
-    ss << std::endl << "  " << fact.toString();
+    ss << std::endl << "  " << fact.str();
   }
 
   ss << std::endl;
@@ -248,7 +251,7 @@ std::string DatalogParser::toString() {
 
   ss << "Queries(" << queries.size() << "):";
   for (auto &query : queries) {
-    ss << std::endl << "  " << query.toString();
+    ss << std::endl << "  " << query.str();
   }
 
   ss << std::endl;

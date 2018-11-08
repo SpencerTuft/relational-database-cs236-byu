@@ -1,0 +1,2 @@
+snap(Id,'Snoopy',A,P)? Yes(1)
+  A='12 Apple St.', Id='33333', P='555-1234'

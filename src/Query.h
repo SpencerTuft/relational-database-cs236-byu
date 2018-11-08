@@ -1,3 +1,5 @@
+#include <utility>
+
 
 
 //
@@ -18,17 +20,17 @@ class Query {
   Query() = default;
   Query(Predicate predicate): pred(std::move(predicate)) {};
 
-  void setPredicate(Predicate predicate) {
-    pred = predicate;
+  void set_predicate(Predicate predicate) {
+    pred = std::move(predicate);
   }
 
-  Predicate getPredicate() {
+  Predicate get_predicate() {
     return pred;
   }
 
-  std::string toString() {
+  std::string str() {
     std::stringstream ss;
-    ss << pred.toString() << "?";
+    ss << pred.str() << "?";
     return ss.str();
   }
 };

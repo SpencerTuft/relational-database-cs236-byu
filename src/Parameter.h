@@ -1,7 +1,3 @@
-#include <utility>
-
-
-
 //
 // Created by Spencer Tuft on 10/6/18.
 //
@@ -21,14 +17,14 @@ class Parameter {
   Parameter() = default;
   explicit Parameter(Token &token): value(token.getValue()), type(token.getType()) {};
   explicit Parameter(Expression expression): value(expression.toString()), type("EXPRESSION") {};
-  Parameter(std::string paramValue, std::string paramType): value(std::move(paramValue)), type(paramType) {};
+  Parameter(std::string paramValue, std::string paramType): value(std::move(paramValue)), type(std::move(paramType)) {};
 
   void setValue(std::string paramValue) {
-    value = paramValue;
+    value = std::move(paramValue);
   }
 
   void setType(std::string paramType) {
-    type = paramType;
+    type = std::move(paramType);
   }
 
   std::string getValue() {

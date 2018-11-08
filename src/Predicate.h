@@ -25,19 +25,27 @@ class Predicate {
   Predicate(std::string identifier, std::vector<Parameter> parameterList)
     : id(std::move(identifier)), list(std::move(parameterList)) {};
 
-  void setId(std::string identifier) {
+  void set_id(std::string identifier) {
     id = identifier;
   }
 
-  void setParamList(std::vector<Parameter> parameterList) {
-    list = parameterList;
+  std::string get_id() {
+    return id;
   }
 
-  void addParam(Parameter parameter) {
+  void set_param_list(std::vector<Parameter> parameterList) {
+    list = std::move(parameterList);
+  }
+
+  std::vector<Parameter> get_param_list() {
+    return list;
+  }
+
+  void add_param(Parameter parameter) {
     list.emplace_back(parameter);
   }
 
-  std::string toString() {
+  std::string str() {
     std::stringstream ss;
     ss << id << "(";
     for (std::size_t i = 0, max = list.size(); i < max; i++) {

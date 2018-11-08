@@ -45,9 +45,9 @@ class Rule {
 
   std::string toString() {
     std::stringstream ss;
-    ss << head.toString() << " :- ";
+    ss << head.str() << " :- ";
     for (std::size_t i = 0, max = list.size(); i < max; i++) {
-      ss << list[i].toString();
+      ss << list[i].str();
       if (i != max - 1) ss << ",";
     }
     ss << ".";

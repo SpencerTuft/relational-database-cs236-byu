@@ -51,6 +51,7 @@ class DatalogParser {
   std::vector<Fact> getFacts();
   std::vector<Rule> getRules();
   std::vector<Query> getQueries();
+  std::vector<std::string> getDomain();
 };
 
 #endif //DATALOG_PARSER_CS236_BYU_DATALOGPARSER_H
