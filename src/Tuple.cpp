@@ -2,7 +2,7 @@
 // Created by Spencer Tuft on 10/29/18.
 //
 
-#include <iostream>
+#include <algorithm>
 #include <sstream>
 #include "Tuple.h"
 
@@ -15,7 +15,7 @@ bool Tuple::empty() const {
 }
 bool Tuple::operator==(const Tuple &l2) const {
   if (l2.size() != this->size()) return false;
-  for (auto i = 0; i < l.size(); i++) {
+  for (int i = 0, max = static_cast<int>(l.size()); i < max; i++) {
     if (l2.at(i) != this->at(i)) return false;
   }
   return true;
@@ -52,7 +52,7 @@ Tuple Tuple::select(std::vector<int> columns) const {
   // Find all column values
   std::vector<std::string> values;
   for (auto &column : columns) {
-    if (column >= 0 && column < l.size()) {
+    if (column >= 0 && column < static_cast<int>(l.size())) {
       values.emplace_back(l[column]);
     }
   }
@@ -71,7 +71,7 @@ Tuple Tuple::project(std::vector<int> columns) const {
 }
 std::string Tuple::str(List headers) const {
   std::stringstream ss;
-  for (auto i = 0; i < headers.size(); i++) {
+  for (size_t i = 0, max = headers.size(); i < max; i++) {
     if (i != 0) ss << ", ";
     ss << headers[i] << "=" << l[i];
   }

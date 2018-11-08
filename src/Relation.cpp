@@ -2,8 +2,10 @@
 // Created by Spencer Tuft on 10/27/18.
 //
 
+#include <algorithm>
 #include <sstream>
 #include "Relation.h"
+
 Relation::Relation() = default;
 Relation::Relation(std::string relation_name) {
   n = std::move(relation_name);
@@ -48,13 +50,13 @@ bool Relation::exists(Tuple tuple) {
   return false;
 }
 int Relation::resolve_column(std::string value) {
-  for (auto i = 0; i < h.size(); i++) {
+  for (int i = 0, max = static_cast<int>(h.size()); i < max; i++) {
     if (h[i] == value) return i;
   }
   return -1;
 }
 std::string Relation::resolve_column(int position) {
-  if (position >= 0 && position < h.size()) return h[position];
+  if (position >= 0 && position < static_cast<int>(h.size())) return h[position];
   return "";
 }
 Relation Relation::select(int column, std::string value) {
@@ -103,7 +105,7 @@ Relation Relation::project(List column_names) {
 Relation Relation::project(std::vector<int> column_positions) {
   std::vector<std::string> new_header;
   for (auto &position : column_positions) {
-    if (position >= 0 && position < h.size()) {
+    if (position >= 0 && position < static_cast<int>(h.size())) {
       new_header.emplace_back(h[position]);
     }
   }

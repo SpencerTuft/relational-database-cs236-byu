@@ -10,9 +10,6 @@
 #include "./DatalogParser.h"
 #include "./Relation.h"
 
-typedef std::map<int, std::string> Constants;
-typedef std::map<std::string, std::vector<int>> Variables;
-
 class Database {
  private:
   std::map<std::string, Relation> r;

@@ -1,0 +1,33 @@
+#!/bin/bash
+
+main()
+{
+  local C
+  local D
+
+
+  while
+    printf "\rPress <enter> to continue%-3.3s" "${D}"
+    #! read -n 1 -t 0.5
+    ! read -n 1 -t 1
+  do
+    C=$(( ( ${C} + 1 ) % 10 ))
+    case "${C}" in
+    (0)   D=""      ;;
+    (1)   D="."     ;;
+    (2)   D=".."    ;;
+    (3)   D="../"   ;;
+    (4)   D="..-"   ;;
+    (5)   D="..\\"  ;;
+    (6)   D="..|"   ;;
+    (7)   D="../"   ;;
+    (8)   D=".."    ;;
+    (9)   D="."     ;;
+    esac
+  done
+}
+
+
+
+main "${@}"
+

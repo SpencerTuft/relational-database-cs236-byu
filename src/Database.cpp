@@ -2,6 +2,7 @@
 // Created by Spencer Tuft on 10/29/18.
 //
 
+#include <algorithm>
 #include "Database.h"
 Database::Database(std::vector<Scheme> schemes) {
   add(std::move(schemes));
@@ -9,11 +10,6 @@ Database::Database(std::vector<Scheme> schemes) {
 Database::Database(std::vector<Scheme> schemes, std::vector<Fact> facts) {
   add(std::move(schemes));
   add(std::move(facts));
-}
-Database::Database(std::vector<Scheme> schemes, std::vector<Fact> facts, std::vector<Query> queries) {
-  add(std::move(schemes));
-  add(std::move(facts));
-  eval(std::move(queries));
 }
 void Database::add(Scheme scheme) {
   std::string relation_name = scheme.get_name();
@@ -71,40 +67,12 @@ std::string Database::str() {
   }
   return ss.str();
 }
-Constants Database::findConstants(Query query) {
-  Constants constants;
-  Predicate predicate = query.get_predicate();
-  std::vector<Parameter> params = predicate.get_param_list();
-  for (auto i = 0; i < params.size(); i++) {
-    if (params[i].getType() == "STRING") {
-      constants.emplace(i, params[i].getValue());
-    }
-  }
-  return constants;
-}
-Variables Database::findVariables(Query query) {
-  Variables variables;
-  Predicate predicate = query.get_predicate();
-  std::vector<Parameter> params = predicate.get_param_list();
-  for (auto i = 0; i < params.size(); i++) {
-    if (params[i].getType() == "ID") {
-      std::string value = params[i].getValue();
-      auto iter = variables.find(value);
-      if (iter != variables.end()) {
-        variables.at(value).emplace_back(i);
-      } else {
-        variables.emplace(params[i].getValue(), std::vector<int>{i});
-      }
-    }
-  }
-  return variables;
-}
 Relation Database::stg_select(Relation &relation, Query query) {
-  Constants constants;
-  Variables variables;
+  std::map<int, std::string> constants;
+  std::map<std::string, std::vector<int>> variables;
   Predicate predicate = query.get_predicate();
   std::vector<Parameter> params = predicate.get_param_list();
-  for (auto i = 0; i < params.size(); i++) {
+  for (int i = 0, max = static_cast<int>(params.size()); i < max; i++) {
     if (params[i].getType() == "STRING") {
       constants.emplace(i, params[i].getValue());
     }

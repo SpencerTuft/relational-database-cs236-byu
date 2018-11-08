@@ -1,5 +1,6 @@
-FROM ubuntu:16.04
+FROM ubuntu:latest
 
 RUN apt-get update
 RUN apt-get upgrade -y
-RUN apt-get install g++ valgrind pmccabe -y
+RUN apt-get install g++ valgrind pmccabe tkdiff -y
+RUN echo "Install complete"
