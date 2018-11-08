@@ -16,12 +16,12 @@ typedef std::map<std::string, std::vector<int>> Variables;
 class Database {
  private:
   std::map<std::string, Relation> r;
-  Constants findConstants(Query);
-  Variables findVariables(Query);
+  Relation stg_select(Relation&, Query);
+  Relation stg_project(Relation&, Query);
+  Relation stg_rename(Relation&, Query);
  public:
   Database(std::vector<Scheme>);
   Database(std::vector<Scheme>, std::vector<Fact>);
-  Database(std::vector<Scheme>, std::vector<Fact>, std::vector<Query>);
   void add(Scheme);
   void add(std::vector<Scheme>);
   void add(Fact);

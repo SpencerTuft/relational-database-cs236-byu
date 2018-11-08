@@ -96,27 +96,6 @@ Relation Relation::project(List column_names) {
   Relation temp(n, new_header);
   for (auto &tuple : t) {
     Tuple projected = tuple.project(column_numbers);
-    if (!projected.empty()) temp.add(projected);
-  }
-  return temp;
-}
-Relation Relation::project(std::map<std::string, std::vector<int>> &column_map) {
-  std::vector<std::string> new_header;
-  std::vector<int> column_positions;
-  for (auto &column : column_map) {
-    int old_position = column.second[0];
-    int new_position = static_cast<int>(new_header.size());
-    if (old_position >= 0 && old_position < h.size()) {
-      column.second[0] = new_position; // Moving header, update column mapping (passed in by reference)
-      new_header.emplace_back(h[old_position]);
-      column_positions.emplace_back(old_position);
-    }
-  }
-  std::sort(column_positions.begin(), column_positions.end());
-  Relation temp(n, new_header);
-
-  for (auto &tuple : t) {
-    Tuple projected = tuple.project(column_positions);
     temp.add(projected);
   }
   return temp;
@@ -132,7 +111,7 @@ Relation Relation::project(std::vector<int> column_positions) {
 
   for (auto &tuple : t) {
     Tuple projected = tuple.project(column_positions);
-    if (!projected.empty()) temp.add(projected);
+    temp.add(projected);
   }
   return temp;
 }

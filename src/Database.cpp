@@ -43,29 +43,9 @@ Relation Database::eval(Query query) {
   std::string relation_name = query.get_predicate().get_id();
   Relation relation = look_up(relation_name);
 
-  auto constant_map = findConstants(query);
-  auto variable_map = findVariables(query);
-
-  // Select Constants
-  for (auto &constant : constant_map) {
-    relation = relation.select(constant.first, constant.second);
-  }
-
-  // Select Variables
-  for (auto &variable : variable_map) {
-    std::vector<int> positions = variable.second;
-    if (positions.size() > 1) {
-      relation = relation.select(positions);
-    }
-  }
-
-  // Project Variable Positions
-  relation = relation.project(variable_map);
-
-  // Rename Relation Schema
-  for (auto &variable : variable_map) {
-    relation = relation.rename(variable.second[0], variable.first);
-  }
+  relation = stg_select(relation, query);
+  relation = stg_project(relation, query);
+  relation = stg_rename(relation, query);
 
   return relation;
 }
@@ -118,4 +98,79 @@ Variables Database::findVariables(Query query) {
     }
   }
   return variables;
+}
+Relation Database::stg_select(Relation &relation, Query query) {
+  Constants constants;
+  Variables variables;
+  Predicate predicate = query.get_predicate();
+  std::vector<Parameter> params = predicate.get_param_list();
+  for (auto i = 0; i < params.size(); i++) {
+    if (params[i].getType() == "STRING") {
+      constants.emplace(i, params[i].getValue());
+    }
+    if (params[i].getType() == "ID") {
+      std::string value = params[i].getValue();
+      auto iter = variables.find(value);
+      if (iter != variables.end()) {
+        variables.at(value).emplace_back(i);
+      } else {
+        variables.emplace(params[i].getValue(), std::vector<int>{i});
+      }
+    }
+  }
+
+  // Select Constants
+  for (auto &constant : constants) {
+    relation = relation.select(constant.first, constant.second);
+  }
+
+  // Select Variables
+  for (auto &variable : variables) {
+    std::vector<int> positions = variable.second;
+    if (positions.size() > 1) {
+      relation = relation.select(positions);
+    }
+  }
+  return relation;
+}
+Relation Database::stg_project(Relation &relation, Query query) {
+  Predicate predicate = query.get_predicate();
+  std::vector<Parameter> params = predicate.get_param_list();
+
+  // Find position of first-encounter, unique variables
+  std::vector<int> positions;
+  std::vector<std::string> variable_names;
+  for (size_t i = 0, max = params.size(); i < max; i++) {
+    if (params[i].getType() == "ID") {
+      std::string value = params[i].getValue();
+      bool found = std::find(variable_names.begin(), variable_names.end(), value) != variable_names.end();
+      if (!found) {
+        variable_names.emplace_back(value);
+        positions.emplace_back(i);
+      }
+    }
+  }
+
+  relation = relation.project(positions);
+  return relation;
+}
+Relation Database::stg_rename(Relation &relation, Query query) {
+  Predicate predicate = query.get_predicate();
+  std::vector<Parameter> params = predicate.get_param_list();
+
+  // Find unique variable ordering
+  std::vector<std::string> variable_names;
+  for (auto &param : params) {
+    if (param.getType() == "ID") {
+      std::string value = param.getValue();
+      bool found = std::find(variable_names.begin(), variable_names.end(), value) != variable_names.end();
+      if (!found) variable_names.emplace_back(value);
+    }
+  }
+
+  for (size_t i = 0, max = variable_names.size(); i < max; i++) {
+    relation = relation.rename(static_cast<int>(i), variable_names[i]);
+  }
+
+  return relation;
 }
