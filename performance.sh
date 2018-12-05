@@ -3,12 +3,12 @@
 # Compile
  echo "Ready to compile"
  ./readWait
- g++ -Wall -Werror -g -std=c++14 ./src/*.cpp -o ./relational-database-cs236-byu
+ g++ -Wall -Werror -g -std=c++14 ./src/*.cpp -o ./cmake-build-debug/relational-database-cs236-byu
 
 # Memory Test
  echo "Next: Memory test"
  ./readWait
- valgrind --leak-check=full ./relational-database-cs236-byu ./test/in/62.txt
+ valgrind --leak-check=full ./cmake-build-debug/relational-database-cs236-byu ./test/in/62.txt
 
 # Complexity Test
  echo "Next: Complexity test"
@@ -25,4 +25,4 @@
 
 # Run container
 # docker run -it -v $PWD:/app memory-test:0.1 bash -c "cd /app/; g++ -Wall -Werror -g -std=c++14 ./src/*.cpp -o ./relational-database-cs236-byu && valgrind --leak-check=full ./relational-database-cs236-byu ./test/in/62.txt"
-# docker run -it -v $PWD:/app memory-test:0.1 bash -c "./performance.sh"
+# docker run -it -v $PWD:/app memory-test:0.1 bash -c "cd /app/; ./performance.sh"

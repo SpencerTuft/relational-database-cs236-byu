@@ -36,7 +36,6 @@ class Relation {
   Relation select(int, int);
   Relation select(std::vector<int>);
   Relation project(List);
-  Relation project(std::map<std::string, std::vector<int>>&);
   Relation project(std::vector<int>);
   Relation rename(int, std::string);
   Relation rename(std::string, std::string);

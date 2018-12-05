@@ -17,7 +17,9 @@ Relation::Relation(std::string relation_name, List header) {
 Relation::Relation(std::string relation_name, List header, Tuples tuples) {
   n = std::move(relation_name);
   h = std::move(header);
-  t = std::move(tuples);
+  for (const auto &tuple : tuples) {
+    add(tuple);
+  }
 }
 void Relation::add(Tuples tuples) {
   for (auto &tuple : tuples) {
@@ -25,8 +27,19 @@ void Relation::add(Tuples tuples) {
   }
 }
 void Relation::add(Tuple tuple) {
-  if (!exists(tuple)) t.emplace_back(tuple);
-  std::sort(t.begin(), t.end());
+  if (t.empty()) t.emplace_back(tuple);
+  else {
+    for (size_t i = 0, max = t.size(); i < max; i++) {
+      if (tuple == t[i]) break; // Cannot add duplicates
+
+      if (t[i] > tuple) {
+        t.insert(t.begin() + i, tuple);
+      }
+      else if (i+1 == max){
+        t.emplace_back(tuple);
+      }
+    }
+  }
 }
 void Relation::add(List list) {
   add(Tuple(list));
@@ -41,7 +54,7 @@ bool Relation::vacant() {
   return h.empty();
 }
 int Relation::size() {
-  return t.size();
+  return static_cast<int>(t.size());
 }
 bool Relation::exists(Tuple tuple) {
   for (auto &existing_tuple : t) {
@@ -129,7 +142,7 @@ Relation Relation::rename(std::string from, std::string to) {
 }
 std::string Relation::str() {
   std::stringstream ss;
-  for (auto & tuple : t) {
+  for (auto &tuple : t) {
     if (&tuple != &t[0]) ss << std::endl;
     ss << "  " << tuple.str(h);
   }
